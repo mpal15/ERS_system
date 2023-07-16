@@ -1,0 +1,44 @@
+<nav class="navbar bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand">ERS_System</a> 
+
+      <% if (locals.admin){ %>
+
+   <a href ="/admin/admin_dashboard"> <button class="btn  btn-success" type="submit"  data-bs-toggle="collapse" data-bs-target="#collapseWidthExample1" aria-expanded="false" aria-controls="collapseWidthExample1">dashboard</button></a>
+      <% }else {%>
+        <button class="btn btn-success">dashboard</button>
+
+      <%}%>
+    <% if (locals.admin) {%>
+  
+     <a href="/admin/admin_profile"> 
+      <button class="btn  btn-success" id="download_button" type="submit">profile</button>
+    </a>
+    <%}else{%>
+      <button class="btn  btn-success" id="download_button" type="submit">profile</button>
+     <%}%>
+
+     <% if (locals.admin) {%>
+      
+      <a href="/admin/employee_signup"><button class="btn  btn-success" type="submit">Add Employee</button></a>
+
+       
+       
+
+       <% }else{%>
+        <button class="btn  btn-success" type="submit">Add Employee</button>
+        
+        <%}%> 
+
+        <div class="d-flex">
+
+      
+          
+        <a href="/admin/logout"><button class="btn  btn-danger" type="submit">logout</button></a> 
+
+      
+      </div>
+    </div>
+  </nav>
+
+

@@ -1,0 +1,64 @@
+<!-- <div class="signin">
+    <form action ='/admin/loginPost' method = "post">
+        <h1>Login Page</h1>
+     <div class="row">
+        <div class="col-4"><label>Email :</label></div>
+        <div class="col-8"><input type = "email" placeholder="email"  name="email" required></div>
+     </div>   
+    
+    <div class="row">
+        <div class="col-4"><label>Password:</label></div>
+        <div class="col-8"><input type = "password" placeholder="password"  name ="password" required></div>
+    </div>
+    
+    <button class="btn-submit" type="submit">submit</button>
+    
+    </form>
+    <div class="signup"><a href="/admin/SignUp"><button class="btn-submit">SignUp</button></a></div>
+    </div> -->
+
+    <!-- login_form -->
+    <div class="d-flex justify-content-center p-4 p-md-0">
+        <form
+          class="rounded p-3 col-12 col-md-4 my-4 shadow-lg"
+          method="POST"
+          action="/admin/loginPost"
+        >
+          <h3 class="mb-4 text-center">Sign in</h3>
+          <!-- Email input -->
+          <div class="form-outline mb-3">
+            <label class="form-label" for="email">Email address</label>
+            <input type="email" id="email" name="email" class="form-control" />
+          </div>
+      
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+            />
+          </div>
+      
+          <div>
+            <!-- Login button -->
+            <button
+              type="submit"
+              class="btn btn-primary btn-block fw-semibold"
+              style="width: 100%"
+            >
+              LOGIN
+            </button>
+          </div>
+          <div>
+            <hr />
+          </div>
+      
+          <!-- Link to redirect to signup page -->
+          <div class="text-center">
+            <p>Not an admin? <a href="/admin/SignUp">Register</a></p>
+          </div>
+        </form>
+      </div>

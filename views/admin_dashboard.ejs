@@ -1,0 +1,119 @@
+<!-- <h2>employee name</h2>
+<% for(let i=0;i<employee.length ;i++){ %>
+    <%= employee[i].name %>
+    <%}%> -->
+<!-- dashboard -->
+<% if(locals.admin) {%>
+<div class="container-fluid p-4">
+    <h1 class="mx-auto text-center">All employees</h1>
+    <div class="d-flex flex-wrap justify-content-center justify-content-md-start">
+      <% for (let i = 0;i < employee.length; i++) {%>
+      <div class="card shadow m-2" style="width: 19rem">
+        <div class="card-body">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/7277/7277044.png"
+            alt=""
+            style="width: 40px"
+          />
+          <h5 class="card-title"><%= employee[i].name %></h5>
+          <h6 class="card-subtitle mb-2 text-secondary"><%= employee[i].email %></h6>
+          <div class="d-flex flex-wrap justify-content-between">
+            <!-- delete button -->
+            <a
+              href="/admin/destroy/<%= employee[i].id %>"
+              class="btn btn-danger mb-1"
+              style="width: 48%"
+              ><i class="fa-solid fa-trash"></i> Delete</a
+            >
+            <!-- edit button -->
+            <a
+              href="/admin/edit-employee/<%= employee[i].id %>"
+              class="btn btn-primary mb-1"
+              style="width: 48%"
+              ><i class="fa-solid fa-pen-to-square"></i> Edit</a
+            >
+  
+            <!-- asign review button -->
+            <a
+              href=""
+              class="btn btn-warning mb-1 my-1"
+              style="width: 100%"
+              data-bs-toggle="modal"
+              data-bs-target="#user<%= employee[i].id %>"
+              data-bs-whatever="@mdo"
+              ><i class="fa-solid fa-file"></i> Assign review</a
+              >
+
+              <!-- Modal for assigning review -->
+              <div
+                class="modal fade"
+                id="user<%= employee[i].id %>"
+                tabindex="-1"
+                aria-labelledby="<%= employee[i].id %>"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        Assign review
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form
+                        action="/admin/assign-review/<%= employee[i].id %>"
+                        method="POST"
+                      >
+                        <div>Reviewer: <%= employee[i].email %></div>
+    
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label"
+                            >Recipient:</label
+                          >
+                          <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            name="recipient_email"
+                          >
+                            <% for (recipient of employee) {%>
+                            <!-- filter the current user from the list of recipient                -->
+                            <% if(recipient.email !=employee[i].email ){ %>
+                            <option value="<%= recipient.email %>">
+                              <%= recipient.email %> (<%= recipient.name %>)
+                            </option>
+                             <%} %> <%} %>
+                          </select>
+                        </div>
+    
+                        <div class="d-flex justify-content-end">
+                          <button
+                            type="button"
+                            class="btn btn-danger mx-2"
+                            data-bs-dismiss="modal"
+                          >
+                            Cancel
+                          </button>
+                          <button type="" class="btn btn-primary mx-2">
+                            Assign
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+      </div>
+  
+      <%}%>
+    </div>
+  </div>
+  <%} %>
