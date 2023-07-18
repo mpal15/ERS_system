@@ -40,23 +40,23 @@
   
   
       <!-- Reviews section -->
-      <div class="container mt-4 col-md-4 ">
+      <div class="container mt-4  col-md-4 ">
         <h4 class="text-center">Feedbacks given by other users</h4>
            
-    
+        <% for(let i = 0; i < employee.feed.length; i++) {%>
+          <div class="d-flex flex-column justify-content-center align-items-center rounded-3 border border-dark">
+          <p class="fw-bold fst-italic">feedback : <%= employee.feed[i].comment %></p>
+          <p class="fw-bold fst-italic">reviewer : <%= employee.feed[i].reviewer %></p>
+          </div>
+          <%}%>
+
+      </div>
           </div>
              
-          <% for(let i = 0; i < employee.feed.length; i++) {%>
-
-            <p><%= employee.feed[i].comment %></p>
-            <p><%= employee.feed[i].reviewer %></p>
-
-            <%}%>
+         
   
-        </div>
-  
-      </div>
+      <!-- </div>
   
     </div>
-  
+   -->
     
