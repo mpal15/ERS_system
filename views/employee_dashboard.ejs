@@ -25,7 +25,7 @@
                       type="email"
                       class="form-control mt-2"
                       id="recipient"
-                      value=""
+                      value="<%= recipient %>"
                       readonly
                       name="recipient_email"
                     />
@@ -58,19 +58,21 @@
         <!-- Feedbacks given by others -->
         <div class="col-12 col-lg-5 my-2">
           <h1 class="text-center">Feedbacks by others</h1>
-          <% for(let i = 0; i < feedback.length; i++) {%>
+        <% for(let i = 0; i < feed.length; i++){%>
+
+        
           <div class="d-flex flex-column justify-content-center align-items-center">
           
               
-              <p><%= feedback[i].comment %></p>
-              <p><%= feedback[i].mail %></p>
+              <p><%= feed[i].comment %></p>
+              <p><%= feed[i].reviewer %></p>
               
 
               
               
           
           </div>
-          <%}%>
+        <%}%>
         </div>
       </div>
     </div>

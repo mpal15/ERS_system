@@ -17,4 +17,5 @@ route.get(`/destroy/:id`, admin.destroy);
 route.post(`/assign-review/:id`,admin.review_assign);
 route.get('/edit-employee/:id',admin.edit_employee);
 route.post('/submit_review',admin.submit_review);
+route.post('/update',admin.Update);
 module.exports = route;

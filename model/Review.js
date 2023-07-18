@@ -9,6 +9,13 @@ const reviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Employee',
     },
+    reviewer : {
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'Employee'
+    },
+    sent : {
+      type : Boolean
+    }
   },
   {
     timestamps: true,

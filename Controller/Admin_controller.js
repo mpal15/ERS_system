@@ -1,5 +1,6 @@
 var Admin = require('../model/Admin');
 var Employee =require('../model/Employee');
+const Review = require('../model/Review');
 var Reviews = require('../model/Review');
 
 
@@ -43,25 +44,42 @@ module.exports.SignInPost = function(req,res){
 module.exports.navbar = async (req,res) =>{
     if(req.isAuthenticated()){
 
-        let employee = await Employee.findById(req.user.id)
+        let employee = await Employee.findById(req.user.id);
+        let review = await Reviews.findOne({sent : false});
+        console.log(review);
+        let email;
+        if (review){
+
+          let recipient = await Employee.findById(review.recipient);
+          email = recipient.email;
+
+        }
+      
+      
+
+
         if (employee){
 
-            let feedback = [];
-            for (let i = 0; i < employee.Review.length; i++){
-                let review = await Reviews.findById(employee.Review[i]);
-                let reviewer = await Employee.findById(review.reviewer);
-                let data = {}; 
-                data.mail = reviewer.email;
-                data.comment = review.review;
-                feedback.push(data);
+           
+            let feedbacks = await Employee.findById(req.user.id);
+            let feed = [];
+            for (let i = 0; i < feedbacks.Review.length; i++){
+
+              let data = {};
+              let review_1 = await Review.findById(feedbacks.Review[i]);
+              let emp = await Employee.findById(review_1.reviewer);
+              data.comment = review_1.review;
+              data.reviewer = emp.email;
+              feed.push(data);
 
             }
-         
             return res.render('employee_dashboard',{
                 name:employee.name,
                 email:employee.email,
                 id:employee.id,
-                feedback
+                recipient : email,
+                feed
+             
 
             });
         }else{
@@ -223,32 +241,22 @@ module.exports.review_assign =  async (req, res) => {
         const reviewer = await Employee.findById(req.params.id);
         const recipient = await Employee.findOne({ email: recipient_email });
 
-        let review = await Reviews.create({
-            recipient : recipient.id
+       let review = await Reviews.create({
+          reviewer : reviewer.id,
+          recipient : recipient.id,
+          sent : false
         });
+
+        recipient.Review.push(review.id);
+        recipient.save();
+
+      
 
            
 
         
   
-    //    // check if review already assigned
-    //     const alreadyAssigned = reviewer.Review.filter(
-    //       (userId) => userId == recipient.id
-    //     );
-    // //  const alreadyAssigned = await assignedReviews.findById(recipient.id);
-  
-    //     // if found, prevent from assigning duplicate review
-    //      if (alreadyAssigned.length > 0) {
-    //     //   req.flash('error', `Review already assigned!`);
-    //       return res.redirect('back');
-    //     }
-  
-    //     // update reviewer's assignedReviews field by putting reference of recipient
-    //     await reviewer.updateOne({
-    //       $push: { assignedReviews: recipient },
-    //     });
-  
-        // req.flash('success', `review assigned successfully!`);
+          
         return res.redirect('back');
       } else {
         // req.flash('error', `couldn't assign the review`);
@@ -271,6 +279,20 @@ module.exports.review_assign =  async (req, res) => {
         //   });
            const{id} = req.params;
            var employee = await Employee.findById(id);
+           let feed = [];
+           for (let i = 0; i < employee.Review.length; i++){
+              
+            let data = {};
+
+            let review = await Reviews.findById(employee.Review[i]);
+            let employeee = await Employee.findById(review.reviewer);
+            data.comment = review.review;
+            data.reviewer = employeee.email;
+
+            feed.push(data);
+
+
+           }
   
           // extracting reviews given by others from employee variable
         //   const reviewsFromOthers = employee.reviewsFromOthers;
@@ -278,7 +300,8 @@ module.exports.review_assign =  async (req, res) => {
           return res.render('edit_employee',{
             employee:{
                 name:employee.name,
-                email:employee.email
+                email:employee.email,
+                feed
             }
           });
         
@@ -296,13 +319,16 @@ module.exports.review_assign =  async (req, res) => {
     const { feedback } = req.body;
     try {
       
-        let reviewer = await Reviews.findOne({reviewer : req.user.id});
+      
 
-        if (reviewer){
-            reviewer.review = feedback;
-            reviewer.save();
-
+         let review = await Reviews.findOne({sent : false});
+        if (review.reviewer == req.user.id){
+          review.review = feedback;
+          review.sent = true;
+          review.save();
         }
+
+     
 
   
      
@@ -310,4 +336,45 @@ module.exports.review_assign =  async (req, res) => {
     } catch (err) {
       console.log('error', err);
     }
+  }
+
+
+  // update employee
+
+  module.exports.Update = async (req,res) => {
+
+    try{
+      let employ = await Employee.findOne({email : req.body.email});
+
+     for(let i = 0; i < employ.Review.length; i++){
+      await Reviews.findByIdAndDelete(employ.Review[i]);
+     }
+
+      if(req.body.role == "Admin"){
+
+         let password = employ.password;
+         let name = employ.name;
+
+         await Admin.create({
+          name : name,
+          password,
+          email : req.body.email
+         });
+
+
+         await Employee.findOneAndDelete({email : req.body.email});
+
+      
+      }
+
+    }catch(err){
+
+      console.log(err);
+
+    }
+
+    return res.redirect('/admin/admin_dashboard');
+
+   
+
   }

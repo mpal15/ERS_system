@@ -62,14 +62,16 @@ passport.deserializeUser(async function(email,done){
 
 passport.setAuthenticatedUser = async (req, res, next) => {
     if(req.user){
-        let employee = await Employee.findById(req.user._id);
-  
-        if(!employee){
-   
-           if (req.isAuthenticated()) {
-               res.locals.admin = req.user;
-           }
-   
+     
+
+       let admin = await Admin.findById(req.user._id);
+
+       if(admin){
+        
+        if (req.isAuthenticated()) {
+            res.locals.admin = req.user;
+        }
+
        }
 
     }
