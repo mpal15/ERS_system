@@ -34,7 +34,7 @@ app.use(express_session({
 
  app.use(passport.setAuthenticatedUser);
 
- var port =8000;
+ var port =8000 || process.env.port;
 
 
  app.use('/',require('./Router/index.js'));
