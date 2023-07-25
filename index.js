@@ -25,7 +25,7 @@ app.use(express_session({
         maxAge: 1000 * 60 * 60 * 24
     },
     store : connect_Mongo.create({
-        mongoUrl : 'mongodb+srv://mohitpal9513:mpal9513@cluster0.gbojmyb.mongodb.net/Session?retryWrites=true&w=majority'
+        mongoUrl : 'mongodb+srv://mohitpal9513:mpal9513@cluster0.gbojmyb.mongodb.net/ERS_System?retryWrites=true&w=majority'
     })
  }))
 
